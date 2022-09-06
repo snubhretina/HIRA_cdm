@@ -49,7 +49,7 @@ getwd()
 pdf("./only_vitrectomy_plot/pdf")
 plot <- ggplot2::ggplot(data = weekly_only_vitrectomy_data,
                         aes(x=UNIT_DATE, y=UNIT_SUM)) + geom_line(size=1)
-plot + labs(title="Vitrectomy Weekly Count", x="date", y="weekly count") + scale_x_date( breaks = date_breaks)
+plot + labs(title="Vitrectomy Weekly Count", x="date", y="weekly count") + scale_x_date( breaks = date_breaks, labels = date_format("%y-%m-%d"))
 dev.off()
 
 
