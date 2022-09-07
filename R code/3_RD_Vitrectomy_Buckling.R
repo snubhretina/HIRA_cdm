@@ -1,0 +1,75 @@
+# condition RD + Procedure Vitrectomy, buckling
+source("R code/1_Settings.R")
+source("R code/2_Functions.R")
+
+# data 만들기
+# TODO : START_DATE
+rd <- conditionCohort("4055484", "2018-01-01")
+rd_data <- makeData_C(rd)
+rd_used_id <- makeIdTable_C(rd, rd_data)
+
+# TODO : START_DATE
+vi_buck <- procedureCohort("4294683, 4230961", "2018-01-01")
+vi_buck_data <- makeData_P(vi_buck)
+vd_used_id <- makeIdTable_P(vi_buck, vi_buck_data)
+
+# select first
+
+rd_data_s <- selectFirst(rd_data, "CONDITION_START_DATE")
+vi_buck_data_s <- selectFirst(vi_buck_data, "PROCEDURE_DATE")
+
+# weekly
+rd_data_s["UNIT_DATE"] = floor_date(rd_data_s$CONDITION_START_DATE, unit="week")
+vi_buck_data_s["UNIT_DATE"] = floor_date(vi_buck_data_s$PROCEDURE_DATE, unit="week")
+
+rd_data_w <- unitCount(rd_data_s)
+vi_buck_data_w <- unitCount(vi_buck_data_s)
+rd_data_w <- rename(rd_data_w, "RD" = UNIT_COUNT)
+vi_buck_data_w <- rename(vi_buck_data_w, "Vitrectomy or Buckling" = UNIT_COUNT)
+
+# join 
+join_data <- distinct(full_join(rd_data_w, vi_buck_data_w))
+join_data[is.na(join_data)] <- 0
+join_data["ALL_COUNT"] = join_data["RD"] + join_data["Vitrectomy or Buckling"]
+
+# plot
+min_date_rd = min(join_data$UNIT_DATE)
+max_date_rd = min(join_data$UNIT_DATE)
+min_date_rd
+max_date_rd
+# plot x축 범위 만들어 놓기
+date_breaks <- seq(as.Date(min_date_rd), as.Date(max_date_rd), by="6 month")
+
+getwd()
+pdf("./RD_Vitrectomy_Buckling_plots/pdf")
+# all
+plot <- ggplot2::ggplot(data = join_data, aes(x=UNIT_DATE, y=ALL_COUNT)) + geom_line(size=1)
+plot + labs(title=" RD Vitrectomy or Buckling Weekly Count", x="date", y="weekly count") + scale_x_date( breaks = date_breaks, labels = date_format("%y-%m-%d"))
+# RD
+plot <- ggplot2::ggplot(data = join_data, aes(x=UNIT_DATE, y=RD)) + geom_line(size=1, color="36c5ca")
+plot + labs(title=" RD Weekly Count", x="date", y="weekly count") + scale_x_date( breaks = date_breaks, labels = date_format("%y-%m-%d"))
+dev.off()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

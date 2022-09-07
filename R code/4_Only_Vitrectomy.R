@@ -1,24 +1,12 @@
 source("R code/1_Settings.R")
 source("R code/2_Functions.R")
 
-### ----------------------- Unit Date Sum Function
-# unit(필수) : 문자열 "week" or "month"
-# ex) weekly_data <- unitDataSum(data, "week)
-unitDataSum <- function(data, unit) {
-  data["UNIT_DATE"] = floor_date(data$PROCEDURE_DATE, unit=unit)
-  data <- data %>%
-    group_by(UNIT_DATE) %>%
-    summarise(UNIT_SUM = n())
-  data <- data %>%
-    arrange(UNIT_DATE)
-  return(
-    data
-  )
-}
 
 #------------------------- Analysis
 # TODO : start_Date 지정
-only_vitrectomy_data <- procedureCohort("4294683", "2018-01-01")
+vitrectomy <- procedureCohort("4294683", "2018-01-01")
+only_vitrectomy_data <- makeData_P(vitrectomy)
+vi_used_id <- makeIdTable_P(vitrectomy, only_vitrectomy_data)
 
 # checked 
 checked <- checkData(only_vitrectomy_data)
