@@ -6,7 +6,7 @@
 
 # 1. LIBRARY
 library(devtools)
-library(SqlREnder)
+library(SqlRender)
 library(DatabaseConnector)
 library(dplyr)
 library(lubridate)
@@ -17,7 +17,7 @@ library(scales)
 
 # 1-1. LIBRARY 없을 시 설치
 # install.packages("devtools")
-# install.packages("SqlREnder")
+# install.packages("SqlRender")
 # install.packages("DatabaseConnector")
 # install.packages("dplyr")
 # install.packages("lubridate")
