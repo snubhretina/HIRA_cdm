@@ -23,7 +23,7 @@ procedureCohort <- function(ancestor_ids, start_date="") {
   # 기본 sql문 토대
   # from 뒤 띄어쓰기 필수
   sql_1 <- "select person_id, procedure_concept_id, procedure_date from " 
-  sql_2 <- "procedure_occurrence where procedure_concept_id in (selecet descendant_concept_id from "
+  sql_2 <- "procedure_occurrence where procedure_concept_id in (select descendant_concept_id from "
   sql_3 <- "concept_ancestor where ancestor_concept_id in ("
   # 인자 setting
   cdm_schema <- paste0(cdm_schema, '.')  # sql문에는 .이 들어가야함  
@@ -55,7 +55,7 @@ conditionCohort <- function(ancestor_ids, start_date="") {
   # 기본 sql문 토대
   # from 뒤 띄어쓰기 필수
   sql_1 <- "select person_id, condition_concept_id, condition_start_date from " 
-  sql_2 <- "condition_occurrence where condition_concept_id in (selecet descendant_concept_id from "
+  sql_2 <- "condition_occurrence where condition_concept_id in (select descendant_concept_id from "
   sql_3 <- "concept_ancestor where ancestor_concept_id in ("
   # 인자 setting
   cdm_schema <- paste0(cdm_schema, '.')  # sql문에는 .이 들어가야함  
@@ -89,7 +89,7 @@ drugCohort <- function(ancestor_ids, start_date="") {
   # 기본 sql문 토대
   # from 뒤 띄어쓰기 필수
   sql_1 <- "select person_id, drug_concept_id, drug_exposure_start_date from " 
-  sql_2 <- "drug_occurrence where drug_concept_id in (selecet descendant_concept_id from "
+  sql_2 <- "drug_occurrence where drug_concept_id in (select descendant_concept_id from "
   sql_3 <- "concept_ancestor where ancestor_concept_id in ("
   # 인자 setting
   cdm_schema <- paste0(cdm_schema, '.')  # sql문에는 .이 들어가야함  
@@ -220,7 +220,7 @@ checkData <- function(data) {
 
 ### func 8. selectFirst
 # data를 인자로 받아 첫 병원 방문 row만 select해 data를 return하는 함수
-# ex) selecet_data <- selectFirst(data, "PROCEDURE_DATE") or selectFirst(data, "DRUG_EXPOSURE_START_DATE")
+# ex) select_data <- selectFirst(data, "PROCEDURE_DATE") or selectFirst(data, "DRUG_EXPOSURE_START_DATE")
 selectFirst <- function(data, column_name) {
   return(
     data %>% 
