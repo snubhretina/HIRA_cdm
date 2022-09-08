@@ -18,7 +18,7 @@ checked_s["person"]
 checked_s["row"]
 
 # week로 date 내림
-select_only_LI_data["UNOIT_DATE"] = floor_date(select_only_LI_data$PROCEDURE_DATE, unit="week")
+select_only_LI_data["UNIT_DATE"] = floor_date(select_only_LI_data$PROCEDURE_DATE, unit="week")
 
 # 수술 별, 주 별 count
 weekly_li_data <- select_only_LI_data %>%
