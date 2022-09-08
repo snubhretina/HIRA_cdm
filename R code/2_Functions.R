@@ -16,7 +16,7 @@ sql_id1 <- "select a.descendant_concept_id, a.ancestor_concept_id, b.concept_nam
 sql_id2 <- "concept_ancestor a inner join "
 sql_id3 <- "concept b on a.a.descendant_concept_id = b.concept_id where ancestor_concept_id in ("
 
-
+### Cohort Definition : func 1 ~3
 ### func 1. PROCEDURE_OCCURECE TABLE 
 # ex) data <- procedureCohort("4283015, 42220065", "2020-01-01") or procedureCohort("4283015, 42220065")
 procedureCohort <- function(ancestor_ids, start_date="") {
@@ -88,7 +88,7 @@ conditionCohort <- function(ancestor_ids, start_date="") {
 drugCohort <- function(ancestor_ids, start_date="") {
   # 기본 sql문 토대
   # from 뒤 띄어쓰기 필수
-  sql_1 <- "select person_id, drug_concept_id, drug_exposure_date from " 
+  sql_1 <- "select person_id, drug_concept_id, drug_exposure_start_date from " 
   sql_2 <- "drug_occurrence where drug_concept_id in (selecet descendant_concept_id from "
   sql_3 <- "concept_ancestor where ancestor_concept_id in ("
   # 인자 setting
