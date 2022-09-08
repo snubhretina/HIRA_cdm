@@ -32,11 +32,12 @@ washoutQuery <- function(ancestor_ids, washout_end_date) {
   cdm_schema <- paste0(cdm_schema, '.')  
   cdm_voca_schema <- paste0(cdm_voca_schema, '.')
   ancestor_ids <- ancestor_ids
-  sql_4 <- "and condition_start_date <="
+  sql_4 <- ") and condition_start_date <="
   washout_end_date <- paste0("TO_DATE('", washout_end_date, "', 'YYYY-MM-DD')") 
   return (
       #data = querySql(conn, paste0(sql_1, cdm_schema, sql_2, cdm_voca_schema, sql_3, ancestor_ids, '));'))
       paste0(sql_1, cdm_schema, sql_2, cdm_voca_schema, sql_3, ancestor_ids, sql_4, washout_end_date, ');')
   )
 }
+washout_id <- querySql(conn, washoutQuery("4146103", "2018-06-30"))
 
