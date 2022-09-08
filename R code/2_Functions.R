@@ -14,7 +14,7 @@ cdm_voca_schema <- ""  # 2. cdm_voca_schema
 # 모든 쿼리문에서 동일하게 사용하기 때문에 전역변수로 사용합니다.
 sql_id1 <- "select a.descendant_concept_id, a.ancestor_concept_id, b.concept_name from "
 sql_id2 <- "concept_ancestor a inner join "
-sql_id3 <- "concept b on a.a.descendant_concept_id = b.concept_id where ancestor_concept_id in ("
+sql_id3 <- "concept b on a.descendant_concept_id = b.concept_id where ancestor_concept_id in ("
 
 ### Cohort Definition : func 1 ~3
 ### func 1. PROCEDURE_OCCURECE TABLE 
