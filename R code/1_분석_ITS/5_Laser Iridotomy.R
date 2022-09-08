@@ -8,14 +8,22 @@ only_LI_data <- makeData_P(LI)
 li_used_id <- makeIdTable_P(LI, only_LI_data)
 
 checked <- checkData(only_LI_data)
-checked["person"]
-checked["row"]
+
+#checkData return 값 csv파일로 저장 ->  반출 예정
+PERSON <- checked["person"]
+ROW <- checked["row"]
+checked_table <- data.frame(PERSON, ROW)
 
 # select First 첫 수술 뽑기
 select_only_LI_data <- selectFirst(only_LI_data, "PROCEDURE_DATE")
 checked_s <- checkData(select_only_LI_data)
-checked_s["person"]
-checked_s["row"]
+
+# 반출할 csv에 컬럼추가
+PERSON_S <- checked_s["person"]
+ROW_S <- checked_s["row"]
+checked_table[,"PERSON_S"] <- PERSON_S
+checked_table[,"ROW_S"] <- ROW_S
+
 
 # week로 date 내림
 select_only_LI_data["UNIT_DATE"] = floor_date(select_only_LI_data$PROCEDURE_DATE, unit="week")
@@ -50,8 +58,12 @@ iridectomy_data <- weekly_li_data %>%
 # min, max date  - plot에 사용
 min_date_li = min(weekly_li_data$UNIT_DATE)
 max_date_li = min(weekly_li_data$UNIT_DATE)
-min_date_li
-max_date_li
+
+# 반출할 csv에 컬럼추가
+checked_table[,"MIN_DATE"] <- min_date_li
+checked_table[,"MAX_DATE"] <- max_date_li
+# csv 저장
+write.csv(checked_table, file="5_dataAndDate")
 
 # Date Break
 date_breaks <- seq(as.Date(min_date_li), as.Date(max_date_li), by="6 month")
