@@ -26,8 +26,8 @@ procedureCohort <- function(ancestor_ids, start_date="") {
   sql_2 <- "procedure_occurrence where procedure_concept_id in (selecet descendant_concept_id from "
   sql_3 <- "concept_ancestor where ancestor_concept_id in ("
   # 인자 setting
-  cdm_schema <- paste0(cdm, '.')  # sql문에는 .이 들어가야함  
-  cdm_voca_schema <- paste0(voca, '.')
+  cdm_schema <- paste0(cdm_schema, '.')  # sql문에는 .이 들어가야함  
+  cdm_voca_schema <- paste0(cdm_voca_schema, '.')
   ancestor_ids <- ancestor_ids
   # START_DATE가 입력 되어진 경우
   if (start_date!="") {
@@ -58,8 +58,8 @@ conditionCohort <- function(ancestor_ids, start_date="") {
   sql_2 <- "condition_occurrence where condition_concept_id in (selecet descendant_concept_id from "
   sql_3 <- "concept_ancestor where ancestor_concept_id in ("
   # 인자 setting
-  cdm_schema <- paste0(cdm, '.')  # sql문에는 .이 들어가야함  
-  cdm_voca_schema <- paste0(voca, '.')
+  cdm_schema <- paste0(cdm_schema, '.')  # sql문에는 .이 들어가야함  
+  cdm_voca_schema <- paste0(cdm_voca_schema, '.')
   ancestor_ids <- ancestor_ids
   # START_DATE가 입력 되어진 경우
   if (start_date!="") {
@@ -92,8 +92,8 @@ drugCohort <- function(ancestor_ids, start_date="") {
   sql_2 <- "drug_occurrence where drug_concept_id in (selecet descendant_concept_id from "
   sql_3 <- "concept_ancestor where ancestor_concept_id in ("
   # 인자 setting
-  cdm_schema <- paste0(cdm, '.')  # sql문에는 .이 들어가야함  
-  cdm_voca_schema <- paste0(voca, '.')
+  cdm_schema <- paste0(cdm_schema, '.')  # sql문에는 .이 들어가야함  
+  cdm_voca_schema <- paste0(cdm_voca_schema, '.')
   ancestor_ids <- ancestor_ids
   # START_DATE가 입력 되어진 경우
   if (start_date!="") {
