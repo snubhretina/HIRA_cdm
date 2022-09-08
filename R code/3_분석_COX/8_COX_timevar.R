@@ -42,13 +42,41 @@ covidCondSqlquery <- function(researcher, cdm, concept_ids){
   )
 }
 
-sqlquery_covid_obs <- covidObsSqlquery(researcher_schema, cdm_schema, covid_observation_id)
-sqlquery_covid_obs
-executeSql(conn, sqlquery_covid_obs) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
-# executeSql(conn, paste0("drop table ", researcher_schema, ".covid_obs_data;"))
+covidAllSqlquery <- function(researcher){
+  sql_1 <- "create table "
+  sql_2 <- "covid_data_all as select a.* from "
+  sql_3 <- "covid_obs_data a union all select b.* from "
+  sql_4 <- "covid_cond_data b;"
+  researcher <- paste0(researcher, '.')
+  return(
+    paste0(sql_1, researcher, sql_2, researcher, sql_3, researcher, sql_4)
+  )
+}
 
-sqlquery_covid_cond <- covidCondSqlquery(researcher_schema, cdm_schema, covid_condition_id)
-sqlquery_covid_cond
-executeSql(conn, sqlquery_covid_obs) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
-# executeSql(conn, paste0("drop table ", researcher_schema, ".covid_cond_data;"))
+{
+  sqlquery_covid_obs <- covidObsSqlquery(researcher_schema, cdm_schema, covid_observation_id)
+  sqlquery_covid_obs
+  executeSql(conn, sqlquery_covid_obs) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
+  # executeSql(conn, paste0("drop table ", researcher_schema, ".covid_obs_data;"))
+  
+  sqlquery_covid_cond <- covidCondSqlquery(researcher_schema, cdm_schema, covid_condition_id)
+  sqlquery_covid_cond
+  executeSql(conn, sqlquery_covid_cond) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
+  # executeSql(conn, paste0("drop table ", researcher_schema, ".covid_cond_data;"))
+  
+  sqlquery_covid_all <- covidAllSqlquery(researcher_schema)
+  sqlquery_covid_all
+  executeSql(conn, sqlquery_covid_all) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
+  # executeSql(conn, paste0("drop table ", researcher_schema, ".covid_data_all;"))
+
+  paste0("create table ", researcher_schema, ".covid_data_rownum as select a.*, row_number() over (partition by a.person_id order by a.covid_date) as p_row_num from ", researcher_schema, ".covid_data_all a;")
+}
+
+
+# 데이터 행. 사람 수 확인
+check_covid_tb <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".covid_data_all;"))
+check_covid_tb
+
+
+
 
