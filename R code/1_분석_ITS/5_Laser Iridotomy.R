@@ -3,7 +3,7 @@ source("R code/2_Functions.R")
 
 # get Data
 # TODO start date
-LI <- procedureCohort("4283015, 42220065", "2018-01-01")
+LI <- procedureCohort("4283015, 4220065", "2018-01-01")
 only_LI_data <- makeData_P(LI)
 li_used_id <- makeIdTable_P(LI, only_LI_data)
 
