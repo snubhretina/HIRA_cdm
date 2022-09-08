@@ -21,7 +21,7 @@ checked_s["person"]
 checked_s["row"]
 
 # weekly count(sum) 주 별 수술 건수 합산
-weekly_only_vitrectomy_data <- unitDataSum(select_only_vitrectomy_data, "week")
+weekly_only_vitrectomy_data <- unitCount(select_only_vitrectomy_data)
 weekly_only_vitrectomy_data <- data.frame(weekly_only_vitrectomy_data)
 
 # min, max date  - plot에 사용
