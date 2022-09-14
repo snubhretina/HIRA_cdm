@@ -89,7 +89,7 @@ drugCohort <- function(ancestor_ids, start_date="") {
   # 기본 sql문 토대
   # from 뒤 띄어쓰기 필수
   sql_1 <- "select person_id, drug_concept_id, drug_exposure_start_date from " 
-  sql_2 <- "drug_occurrence where drug_concept_id in (select descendant_concept_id from "
+  sql_2 <- "drug_exposure where drug_concept_id in (select descendant_concept_id from "
   sql_3 <- "concept_ancestor where ancestor_concept_id in ("
   # 인자 setting
   cdm_schema <- paste0(cdm_schema, '.')  # sql문에는 .이 들어가야함  
@@ -133,7 +133,7 @@ makeData_P <- function(data) {
 
 makeIdTable_P <- function(raw_data, data) {
   DES_ID = raw_data$ids.DESCENDANT_CONCEPT_ID
-  ANC_ID = raw_data$ids.ANCESTOR_ID
+  ANC_ID = raw_data$ids.ANCESTOR_CONCEPT_ID
   NAME = raw_data$ids.CONCEPT_NAME
   id_data = data.frame(DES_ID, ANC_ID, NAME)
   # data table에서 사용된 ids
@@ -163,7 +163,7 @@ makeData_C <- function(data) {
 
 makeIdTable_C <- function(raw_data, data) {
   DES_ID = raw_data$ids.DESCENDANT_CONCEPT_ID
-  ANC_ID = raw_data$ids.ANCESTOR_ID
+  ANC_ID = raw_data$ids.ANCESTOR_CONCEPT_ID
   NAME = raw_data$ids.CONCEPT_NAME
   id_data = data.frame(DES_ID, ANC_ID, NAME)
   # data table에서 사용된 ids
@@ -193,7 +193,7 @@ makeData_D <- function(data) {
 
 makeIdTable_D <- function(raw_data, data) {
   DES_ID = raw_data$ids.DESCENDANT_CONCEPT_ID
-  ANC_ID = raw_data$ids.ANCESTOR_ID
+  ANC_ID = raw_data$ids.ANCESTOR_CONCEPT_ID
   NAME = raw_data$ids.CONCEPT_NAME
   id_data = data.frame(DES_ID, ANC_ID, NAME)
   # data table에서 사용된 ids
