@@ -1,9 +1,12 @@
-source("R code/1_Settings.R")
-source("R code/2_Functions.R")
 
-#------------------------- Analysis
-# TODO : start_Date 지정
+## TODO : 현재 작업 위치 적어주세요.
+# (1_Settings.R를 포함하여 R 파일들이 존재하는 폴더명으로 작성해주세요)
+path <- ""  # 현재 작업 위치
+setwd(path)
+source("1_Settings.R")
+source("2_Functions.R")
 
+# ---------------------------- Cohort -----------------------------
 luncentis <- drugCohort("21605124, 41405555", "2018-01-01")
 eylea <- drugCohort("40257019, 42923303", "2018-01-01")
 
@@ -13,6 +16,9 @@ eylea_data <- makeData_D(eylea)
 
 lucentis_ID_data <- makeIdTable_D(lucentis, lucentis_data)
 eylea_ID_data <- makeIdTable_D(eylea, eylea_data)
+# 사용된 Concept ID 확인을 위해 저장합니다.
+used_id6 <- rbind(lucentis_ID_data, eylea_ID_data)
+write.csv(used_id6, file="./result_6/6_used_id")
 
 check_lucentis <- checkData(lucentis_data)
 check_eylea <- checkData(eylea_data)
@@ -24,7 +30,7 @@ checked_table <- data.frame(PERSON, ROW)
 
 # Weekly
 lucentis_data["UNIT_DATE"] <- floor_date(lucentis_data$DRUG_EXPOSURE_START_DATE, unit="week")
-eylea_data["UNIT_DATE"] <- floor_date(eylea_dataDRUG_EXPOSURE_START_DATE, unit="week")
+eylea_data["UNIT_DATE"] <- floor_date(eylea_data$DRUG_EXPOSURE_START_DATE, unit="week")
 
 lucentis_data_w <- unitCount(lucentis_data)
 eylea_data_w <- unitCount(eylea_data)
@@ -47,14 +53,14 @@ max_date = max(all_data$UNIT_DATE)
 checked_table[,"MIN_DATE"] <- min_date
 checked_table[,"MAX_DATE"] <- max_date
 # csv 저장
-write.csv(checked_table, file="6_dataAndDate")
+write.csv(checked_table, file="./result_6/6_dataAndDate")
 
 
 # plot x축 범위
 date_breaks <- seq(as.Date(min_date), as.Date(max_date), by="6 month")
 # pdf 저장 시작
 getwd()
-pdf("./lucentis_eylea_plots/pdf")
+pdf("./result_6/6_lucentis_eylea_plots.pdf", width = 25)
 # all 구분 안되어짐 
 plot <- ggplot2::ggplot(data = all_data1, aes(x=UNIT_DATE, y=ALL_COUNT)) + geom_line(size=1)
 plot + labs(title="All Weekly Count", x="date", y="weekly count") + scale_x_date( breaks = date_breaks, labels = date_format("%y-%m-%d"))
