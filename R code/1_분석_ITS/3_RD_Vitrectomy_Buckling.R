@@ -1,11 +1,9 @@
 # condition RD + Procedure Vitrectomy, buckling
 # TODO : 현재 작업 위치 (1_Settings.R를 포함하여 R 파일들이 존재하는 폴더명으로 작성해주세요)
-path <- ""
+path <- "" # 현재 작업 위치
 setwd(path)
 source("1_Settings.R")
 source("2_Functions.R")
-
-
 
 # ---------------------------- Cohort -----------------------------
 # data 만들기 
@@ -81,27 +79,6 @@ plot + labs(title=" RD Vitrectomy or Buckling Weekly Count", x="date", y="weekly
 plot <- ggplot2::ggplot(data = join_data, aes(x=UNIT_DATE, y=RD)) + geom_line(size=1, color="36c5ca")
 plot + labs(title=" RD Weekly Count", x="date", y="weekly count") + scale_x_date( breaks = date_breaks, labels = date_format("%y-%m-%d"))
 dev.off()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
