@@ -18,7 +18,7 @@ lucentis_ID_data <- makeIdTable_D(lucentis, lucentis_data)
 eylea_ID_data <- makeIdTable_D(eylea, eylea_data)
 # 사용된 Concept ID 확인을 위해 저장합니다.
 used_id6 <- rbind(lucentis_ID_data, eylea_ID_data)
-write.csv(used_id6, file="./result_6/6_used_id")
+write.csv(used_id6, file="./result_its/6_used_id")
 
 check_lucentis <- checkData(lucentis_data)
 check_eylea <- checkData(eylea_data)
@@ -53,14 +53,14 @@ max_date = max(all_data$UNIT_DATE)
 checked_table[,"MIN_DATE"] <- min_date
 checked_table[,"MAX_DATE"] <- max_date
 # csv 저장
-write.csv(checked_table, file="./result_6/6_dataAndDate")
+write.csv(checked_table, file="./result_its/6_dataAndDate")
 
 
 # plot x축 범위
 date_breaks <- seq(as.Date(min_date), as.Date(max_date), by="6 month")
 # pdf 저장 시작
 getwd()
-pdf("./result_6/6_lucentis_eylea_plots.pdf", width = 25)
+pdf("./result_its/6_lucentis_eylea_plots.pdf", width = 25)
 # all 구분 안되어짐 
 plot <- ggplot2::ggplot(data = all_data1, aes(x=UNIT_DATE, y=ALL_COUNT)) + geom_line(size=1)
 plot + labs(title="All Weekly Count", x="date", y="weekly count") + scale_x_date( breaks = date_breaks, labels = date_format("%y-%m-%d"))
