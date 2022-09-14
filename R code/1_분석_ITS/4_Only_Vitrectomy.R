@@ -13,7 +13,7 @@ only_vitrectomy_data <- makeData_P(vitrectomy)
 vi_used_id <- makeIdTable_P(vitrectomy, only_vitrectomy_data)
 
 # 사용된 Concept ID 확인을 위해 저장합니다.
-write.csv(vi_used_id, file="./result_4/4_used_id")
+write.csv(vi_used_id, file="./result_its/4_used_id")
 
 # checked 
 checked <- checkData(only_vitrectomy_data)
@@ -48,13 +48,13 @@ max_date_ov = max(weekly_only_vitrectomy_data$UNIT_DATE)
 checked_table[,"MIN_DATE"] <- min_date_ov
 checked_table[,"MAX_DATE"] <- max_date_ov
 # csv 저장
-write.csv(checked_table, file="./result_4/4_dataAndDate")
+write.csv(checked_table, file="./result_its/4_dataAndDate")
 
 # plot x축 범위 만들어 놓기
 date_breaks <- seq(as.Date(min_date_ov), as.Date(max_date_ov), by="6 month")
 
 getwd()
-pdf("./result_4/4_only_vitrectomy_plot.pdf", width = 25)
+pdf("./result_its/4_only_vitrectomy_plot.pdf", width = 25)
 plot <- ggplot2::ggplot(data = weekly_only_vitrectomy_data,
                         aes(x=UNIT_DATE, y=UNIT_COUNT)) + geom_line(size=1)
 plot + labs(title="Vitrectomy Weekly Count", x="date", y="weekly count") + scale_x_date( breaks = date_breaks, labels = date_format("%y-%m-%d"))
