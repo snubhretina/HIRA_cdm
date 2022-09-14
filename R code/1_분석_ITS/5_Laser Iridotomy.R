@@ -1,18 +1,24 @@
-source("R code/1_Settings.R")
-source("R code/2_Functions.R")
+## TODO : 현재 작업 위치 적어주세요.
+# (1_Settings.R를 포함하여 R 파일들이 존재하는 폴더명으로 작성해주세요)
+path <- ""  # 현재 작업 위치
+setwd(path)
+source("1_Settings.R")
+source("2_Functions.R")
 
-# get Data
-# TODO start date
+# ---------------------------- Cohort -----------------------------
 LI <- procedureCohort("4283015, 4220065", "2018-01-01")
 only_LI_data <- makeData_P(LI)
 li_used_id <- makeIdTable_P(LI, only_LI_data)
+# 사용된 Concept ID 확인을 위해 저장합니다.
+write.csv(li_used_id, file="./result_5/5_used_id")
 
 checked <- checkData(only_LI_data)
-
 #checkData return 값 csv파일로 저장 ->  반출 예정
 PERSON <- checked["person"]
 ROW <- checked["row"]
 checked_table <- data.frame(PERSON, ROW)
+
+# ---------------------------- Analysis -----------------------------
 
 # select First 첫 수술 뽑기
 select_only_LI_data <- selectFirst(only_LI_data, "PROCEDURE_DATE")
@@ -23,7 +29,6 @@ PERSON_S <- checked_s["person"]
 ROW_S <- checked_s["row"]
 checked_table[,"PERSON_S"] <- PERSON_S
 checked_table[,"ROW_S"] <- ROW_S
-
 
 # week로 date 내림
 select_only_LI_data["UNIT_DATE"] = floor_date(select_only_LI_data$PROCEDURE_DATE, unit="week")
@@ -57,19 +62,19 @@ iridectomy_data <- weekly_li_data %>%
 
 # min, max date  - plot에 사용
 min_date_li = min(weekly_li_data$UNIT_DATE)
-max_date_li = min(weekly_li_data$UNIT_DATE)
+max_date_li = max(weekly_li_data$UNIT_DATE)
 
 # 반출할 csv에 컬럼추가
 checked_table[,"MIN_DATE"] <- min_date_li
 checked_table[,"MAX_DATE"] <- max_date_li
 # csv 저장
-write.csv(checked_table, file="5_dataAndDate")
+write.csv(checked_table, file="./result_5/5_dataAndDate")
 
 # Date Break
 date_breaks <- seq(as.Date(min_date_li), as.Date(max_date_li), by="6 month")
 
 getwd()
-pdf("./only_LI_plots/pdf")
+pdf("./result_5/5_only_LI_plots.pdf", width = 25)
 # group line
 plot <- ggplot2::ggplot(data = weekly_li_data,
                         aes(x=UNIT_DATE, y=UNIT_COUNT, 
@@ -85,21 +90,6 @@ plot <- ggplot2::ggplot(data = iridectomy_data,
                         aes(x=UNIT_DATE, y=UNIT_COUNT))+ geom_line(size=1, color="#36C5CA")
 plot + labs(title="Optical Iridectomy Weekly Count", x="date", y="weekly count") + scale_x_date( breaks = date_breaks, labels = date_format("%y-%m-%d"))
 dev.off()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
