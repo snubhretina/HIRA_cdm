@@ -1,5 +1,4 @@
 
-
 ## TODO : 현재 작업 위치 적어주세요.
 # (1_Settings.R를 포함하여 R 파일들이 존재하는 폴더명으로 작성해주세요)
 path <- ""  # 현재 작업 위치
@@ -60,13 +59,6 @@ plot <- ggplot2::ggplot(data = weekly_only_vitrectomy_data,
                         aes(x=UNIT_DATE, y=UNIT_COUNT)) + geom_line(size=1)
 plot + labs(title="Vitrectomy Weekly Count", x="date", y="weekly count") + scale_x_date( breaks = date_breaks, labels = date_format("%y-%m-%d"))
 dev.off()
-
-
-
-
-
-
-
 
 
 
