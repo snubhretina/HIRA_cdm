@@ -1,6 +1,6 @@
-# condition RD + Procedure Vitrectomy, buckling
-# TODO : 현재 작업 위치 (1_Settings.R를 포함하여 R 파일들이 존재하는 폴더명으로 작성해주세요)
-path <- "" # 현재 작업 위치
+## TODO : 현재 작업 위치 적어주세요.
+# (1_Settings.R를 포함하여 R 파일들이 존재하는 폴더명으로 작성해주세요)
+path <- ""  # 현재 작업 위치
 setwd(path)
 source("1_Settings.R")
 source("2_Functions.R")
