@@ -17,7 +17,7 @@ vd_used_id <- makeIdTable_P(vi_buck, vi_buck_data)
 
 # 사용된 Concept ID 확인을 위해 저장합니다.
 used_id3 <- rbind(rd_used_id, vd_used_id)
-write.csv(used_id3, file="./result_3/3_used_id")
+write.csv(used_id3, file="./result_its/3_used_id")
 
 check_rd <- checkData(rd_data)
 check_vi <- checkData(vi_buck_data)
@@ -64,14 +64,14 @@ max_date_rd = max(join_data$UNIT_DATE)
 checked_table[,"MIN_DATE"] <- min_date_rd
 checked_table[,"MAX_DATE"] <- max_date_rd
 # csv 저장
-write.csv(checked_table, file="./result_3/3_dataAndDate")
+write.csv(checked_table, file="./result_its/3_dataAndDate")
 
 
 # plot x축 범위 만들어 놓기
 date_breaks <- seq(as.Date(min_date_rd), as.Date(max_date_rd), by="6 month")
 
 getwd()
-pdf("./result_3/3_RD_Vitrectomy_Buckling_plots.pdf", width = 25)
+pdf("./result_its/3_RD_Vitrectomy_Buckling_plots.pdf", width = 25)
 # all
 plot <- ggplot2::ggplot(data = join_data, aes(x=UNIT_DATE, y=ALL_COUNT)) + geom_line(size=1)
 plot + labs(title=" RD Vitrectomy or Buckling Weekly Count", x="date", y="weekly count") + scale_x_date( breaks = date_breaks, labels = date_format("%y-%m-%d"))
