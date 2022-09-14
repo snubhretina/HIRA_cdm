@@ -111,6 +111,70 @@ rvoDataSqlquery <- function(researcher){
 }
 
 # Washout
+covidWashoutSqlquery <- function(researcher, washout_date){
+  sql_1 <- "create table "
+  sql_2 <- "covid_data_aft_washout as select a.* from "
+  sql_3 <- "covid_data_todo a where a.person_id not in (select b.person_id from "
+  sql_4 <- "covid_data_todo b where b.covid_date < "
+  sql_5 <- ") and a.person_id not in (select c.person_id from "
+  sql_6 <- "rvo_data_todo c where c.condition_start_date < "
+  researcher <- paste0(researcher, '.')
+  washout_date <- paste0("TO_DATE('", washout_date, "', 'YYYY-MM-DD')")
+  return(
+    paste0(sql_1, researcher, sql_2, researcher, sql_3, researcher, sql_4, washout_date, sql_5, researcher, sql_6, washout_date, ");")
+  )
+}
+
+rvoWashoutSqlquery <- function(researcher, washout_date){
+  sql_1 <- "create table "
+  sql_2 <- "rvo_data_aft_washout as select a.* from "
+  sql_3 <- "rvo_data_todo a where a.person_id not in (select b.person_id from "
+  sql_4 <- "covid_data_todo b where b.covid_date < "
+  sql_5 <- ") and a.person_id not in (select c.person_id from "
+  sql_6 <- "rvo_data_todo c where c.condition_start_date < "
+  researcher <- paste0(researcher, '.')
+  washout_date <- paste0("TO_DATE('", washout_date, "', 'YYYY-MM-DD')")
+  return(
+    paste0(sql_1, researcher, sql_2, researcher, sql_3, researcher, sql_4, washout_date, sql_5, researcher, sql_6, washout_date, ");")
+  )
+}
+
+# Cox Data todo
+coxDataSqlquery <- function(researcher){
+  sql_1 <- "create table "
+  sql_2 <- "cox_data_todo as select a.*, b.condition_concept_id as rvo_id, b.condition_start_date as rvo_date from "
+  sql_3 <- "covid_data_aft_washout a left join "
+  sql_4 <- "rvo_data_aft_washout b on a.person_id = b.person_id;"
+  researcher <- paste0(researcher, '.')
+  return(
+    paste0(sql_1, researcher, sql_2, researcher, sql_3, researcher, sql_4)
+  )
+}
+coxDateSqlquery <- function(researcher, start_date, end_date){
+  sql_1 <- "create table "
+  sql_2 <- "cox_data_date as select a.*, "
+  sql_3 <- " as start_date, case when a.rvo_date is NULL then "
+  sql_4 <- " else a.rvo_date end as end_date, case when a.rvo_date is NULL then 0 else 1 end as outcome from "
+  sql_5 <- "cox_data_todo a;"
+  researcher <- paste0(researcher, '.')
+  start_date <- paste0("TO_DATE('", start_date, "', 'YYYY-MM-DD')")
+  end_date <- paste0("TO_DATE('", end_date, "', 'YYYY-MM-DD')")
+  return(
+    paste0(sql_1, researcher, sql_2, start_date, sql_3, end_date, sql_4, researcher, sql_5)
+  )
+}
+
+# Simple Cox
+coxSimpleSqlquery <- function(researcher){
+  sql_1 <- "create table "
+  sql_2 <- "simple_cox as select a.*, 0 as strt, (a.end_date - a.start_date) as stopp, (a.covid_date - a.start_date) as time_cov_start, (a.end_date - a.covid_date) as time_cov_stop from "
+  sql_3 <- "cov_data_date a;"
+  researcher <- paste0(researcher, '.')
+  return(
+    paste0(sql_1, researcher, sql_2, researcher, sql_3)
+  )
+}
+
 
 {
   sqlquery_covid_obs <- covidObsSqlquery(researcher_schema, cdm_schema, covid_observation_id)
@@ -139,7 +203,7 @@ rvoDataSqlquery <- function(researcher){
   # executeSql(conn, paste0("drop table ", researcher_schema, ".covid_data_todo;"))
   
   ############################################################################################
-
+  
   sqlquery_rvo_cond <- rvoCondSqlquery(researcher_schema, cdm_schema, cdm_voca_schema, rvo_concept_id)
   sqlquery_rvo_cond
   executeSql(conn, sqlquery_rvo_cond) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
@@ -154,6 +218,35 @@ rvoDataSqlquery <- function(researcher){
   sqlquery_rvo_todo
   executeSql(conn, sqlquery_rvo_todo) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
   # executeSql(conn, paste0("drop table ", researcher_schema, ".rvo_data_todo;"))
+  
+  #############################################################################################
+  
+  sqlquery_covid_washout <- covidWashoutSqlquery(researcher_schema, "2018-01-01")
+  sqlquery_covid_washout
+  executeSql(conn, sqlquery_covid_washout) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
+  # executeSql(conn, paste0("drop table ", researcher_schema, ".covid_data_aft_washout;"))
+  
+  sqlquery_rvo_washout <- rvoWashoutSqlquery(researcher_schema, "2018-01-01")
+  sqlquery_rvo_washout
+  executeSql(conn, sqlquery_covid_washout) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
+  # executeSql(conn, paste0("drop table ", researcher_schema, ".covid_data_aft_washout;"))
+  
+  #############################################################################################
+  
+  sqlquery_cox_todo <- coxDataSqlquery(researcher_schema)
+  sqlquery_cox_todo
+  executeSql(conn, sqlquery_cox_todo) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
+  # executeSql(conn, paste0("drop table ", researcher_schema, ".cox_data_todo;"))
+  
+  sqlquery_cox_date <- coxDateSqlquery(researcher_schema, "2020-01-01", "2022-04-30")
+  sqlquery_cox_date
+  executeSql(conn, sqlquery_cox_date) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
+  # executeSql(conn, paste0("drop table ", researcher_schema, ".cox_data_date;"))
+  
+  sqlquery_simple_cox <- coxSimpleSqlquery(researcher_schema)
+  sqlquery_simple_cox
+  executeSql(conn, sqlquery_simple_cox) ## 에러가 난다면 아래 주석 풀어서 실행 후 다시 실행
+  # executeSql(conn, paste0("drop table ", researcher_schema, ".cox_data_date;"))
 }
 
 #paste0("create table ", researcher_schema, ".covid_data_rownum as select a.*, row_number() over (partition by a.person_id order by a.covid_date) as p_row_num from ", researcher_schema, ".covid_data_all a;")
