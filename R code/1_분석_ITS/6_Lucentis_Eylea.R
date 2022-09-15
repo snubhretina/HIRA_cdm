@@ -18,7 +18,7 @@ lucentis_ID_data <- makeIdTable_D(lucentis, lucentis_data)
 eylea_ID_data <- makeIdTable_D(eylea, eylea_data)
 # 사용된 Concept ID 확인을 위해 저장합니다.
 used_id6 <- rbind(lucentis_ID_data, eylea_ID_data)
-write.csv(used_id6, file="./result_its/6_used_id")
+write.csv(used_id6, file="./result_its/6_used_id.csv")
 
 check_lucentis <- checkData(lucentis_data)
 check_eylea <- checkData(eylea_data)
@@ -53,7 +53,7 @@ max_date = max(all_data$UNIT_DATE)
 checked_table[,"MIN_DATE"] <- min_date
 checked_table[,"MAX_DATE"] <- max_date
 # csv 저장
-write.csv(checked_table, file="./result_its/6_dataAndDate")
+write.csv(checked_table, file="./result_its/6_dataAndDate.csv")
 
 
 # plot x축 범위
