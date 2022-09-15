@@ -17,7 +17,7 @@ vd_used_id <- makeIdTable_P(vi_buck, vi_buck_data)
 
 # 사용된 Concept ID 확인을 위해 저장합니다.
 used_id3 <- rbind(rd_used_id, vd_used_id)
-write.csv(used_id3, file="./result_its/3_used_id")
+write.csv(used_id3, file="./result_its/3_used_id.csv")
 
 check_rd <- checkData(rd_data)
 check_vi <- checkData(vi_buck_data)
@@ -64,7 +64,7 @@ max_date_rd = max(join_data$UNIT_DATE)
 checked_table[,"MIN_DATE"] <- min_date_rd
 checked_table[,"MAX_DATE"] <- max_date_rd
 # csv 저장
-write.csv(checked_table, file="./result_its/3_dataAndDate")
+write.csv(checked_table, file="./result_its/3_dataAndDate.csv")
 
 
 # plot x축 범위 만들어 놓기
