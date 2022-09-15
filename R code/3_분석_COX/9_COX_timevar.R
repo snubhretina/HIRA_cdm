@@ -110,7 +110,22 @@ rvo_concept_id <- "440392"
 check_covid_tb <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".covid_data_all;"))
 chech_rvo_tb <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".rvo_data;"))
 check_covid_tb_wo <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".covid_data_aft_washout;"))
-chech_rvo_tb_wo <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".rvo_data_aft_washout;"))
+check_rvo_tb_wo <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".rvo_data_aft_washout;"))
+check_cox <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".simple_cox;"))
+check_time_cox <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".time_cox_final;"))
+
+check_table <- matrix(ncol = 2, byrow = T)
+check_table <- data.frame(check_table)
+colnames(check_table) <- c("COUNT_PERSON", "COUNT_ROW")
+check_table[1,] <- check_covid_tb
+check_table[2,] <- check_rvo_tb
+check_table[3,] <- check_covid_tb_wo
+check_table[4,] <- check_rvo_tb_wo
+check_table[5,] <- check_cox
+check_table[6,] <- check_time_cox
+
+getwd()
+write.csv(check_table, "./result_cox/check_table.csv")
 
 #############################################################################################
 
@@ -127,7 +142,7 @@ title(main = "Keplan-Meier survival estimates")
 dev.off()
 
 survival_table_simple <- as.data.frame(summary_table_simple[c("time", "n.risk", "n.event", "n.censor", "surv", "cumhaz", "std.chaz", "lower", "upper")])
-write.csv(survival_table_simple, "./simple_cox_survival_table.csv")
+write.csv(survival_table_simple, "./result_cox/simple_cox_survival_table.csv")
 
 #############################################################################################
 
@@ -138,7 +153,8 @@ summary(fit2)
 summary_table_timevar <- summary(fit2)
 
 survival_table_timevar <- as.data.frame(summary_table_timevar[c("n", "nevent", "coefficients", "conf.int")])
-write.csv(survival_table_timevar, "./simple_cox_survival_table.csv")
+getwd()
+write.csv(survival_table_timevar, "./result_cox/simple_cox_survival_table.csv")
 
 
 #############################################################################################
