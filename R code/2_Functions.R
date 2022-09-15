@@ -242,7 +242,22 @@ unitCount <- function(data) {
   )
 }
 
-
+### func 10. Washout
+# 특정 시점 기준 이전으로 발생한 진단명의 washout person_id만 뽑아오는 query
+# ex) washoutIdQuery("4146103", "2018-06-30")
+washoutIdQuery <- function(ancestor_ids, washout_end_date) {
+  sql_1 <- "select distinct person_id from " 
+  sql_2 <- "condition_occurrence where condition_concept_id in (select descendant_concept_id from "
+  sql_3 <- "concept_ancestor where ancestor_concept_id in ("
+  cdm_schema <- paste0(cdm_schema, '.')  
+  cdm_voca_schema <- paste0(cdm_voca_schema, '.')
+  ancestor_ids <- ancestor_ids
+  sql_4 <- ")) and condition_start_date <="
+  washout_end_date <- paste0("TO_DATE('", washout_end_date, "', 'YYYY-MM-DD');") 
+  return (
+    paste0(sql_1, cdm_schema, sql_2, cdm_voca_schema, sql_3, ancestor_ids, sql_4, washout_end_date)
+  )
+}
 
 
 
