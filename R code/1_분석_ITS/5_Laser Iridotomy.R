@@ -10,7 +10,7 @@ LI <- procedureCohort("4283015, 4220065", "2018-01-01")
 only_LI_data <- makeData_P(LI)
 li_used_id <- makeIdTable_P(LI, only_LI_data)
 # 사용된 Concept ID 확인을 위해 저장합니다.
-write.csv(li_used_id, file="./result_its/5_used_id")
+write.csv(li_used_id, file="./result_its/5_used_id.csv")
 
 checked <- checkData(only_LI_data)
 #checkData return 값 csv파일로 저장 ->  반출 예정
@@ -68,7 +68,7 @@ max_date_li = max(weekly_li_data$UNIT_DATE)
 checked_table[,"MIN_DATE"] <- min_date_li
 checked_table[,"MAX_DATE"] <- max_date_li
 # csv 저장
-write.csv(checked_table, file="./result_its/5_dataAndDate")
+write.csv(checked_table, file="./result_its/5_dataAndDate.csv")
 
 # Date Break
 date_breaks <- seq(as.Date(min_date_li), as.Date(max_date_li), by="6 month")
