@@ -14,6 +14,7 @@ library(ggplot2)
 library(forecast)
 library(ggrepel)
 library(scales)
+library(survival)
 
 # 1-1. LIBRARY 없을 시 설치
 # install.packages("devtools")
@@ -25,6 +26,7 @@ library(scales)
 # install.packages("forecast")
 # install.packages("ggrepel")
 # install.packages("scales")
+# install.packages("survival")
 
 
 
