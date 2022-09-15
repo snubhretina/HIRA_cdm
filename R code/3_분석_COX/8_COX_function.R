@@ -153,7 +153,7 @@ coxDateSqlquery <- function(researcher, start_date, end_date){
 coxSimpleSqlquery <- function(researcher){
   sql_1 <- "create table "
   sql_2 <- "simple_cox as select a.*, 0 as strt, (a.end_date - a.start_date) as stopp, (a.covid_date - a.start_date) as time_cov_start, (a.end_date - a.covid_date) as time_cov_stop from "
-  sql_3 <- "cov_data_date a;"
+  sql_3 <- "cox_data_date a;"
   researcher <- paste0(researcher, '.')
   return(
     paste0(sql_1, researcher, sql_2, researcher, sql_3)

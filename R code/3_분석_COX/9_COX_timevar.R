@@ -1,12 +1,5 @@
 # COX : COVID as time-varying covatiate
 
-library(devtools)
-library(SqlRender)
-library(DatabaseConnector)
-library(dplyr)
-library(lubridate)
-library(survival)
-
 ## TODO : 현재 작업 위치 적어주세요.
 # (1_Settings.R를 포함하여 R 파일들이 존재하는 폴더명으로 작성해주세요)
 path <- ""  # 현재 작업 위치
@@ -67,7 +60,7 @@ rvo_concept_id <- "440392"
   # executeSql(conn, paste0("drop table ", researcher_schema, ".covid_data_aft_washout;"))
   
   sqlquery_rvo_washout <- rvoWashoutSqlquery(researcher_schema, "2020-01-01")
-  executeSql(conn, sqlquery_covid_washout) 
+  executeSql(conn, sqlquery_rvo_washout) 
   # executeSql(conn, paste0("drop table ", researcher_schema, ".rvo_data_aft_washout;"))
   
   ##
@@ -108,7 +101,7 @@ rvo_concept_id <- "440392"
 
 # Check row_num, p_num
 check_covid_tb <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".covid_data_all;"))
-chech_rvo_tb <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".rvo_data;"))
+check_rvo_tb <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".rvo_data;"))
 check_covid_tb_wo <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".covid_data_aft_washout;"))
 check_rvo_tb_wo <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".rvo_data_aft_washout;"))
 check_cox <- querySql(conn, paste0("select count(distinct person_id) as count_p, count(*) as count_n from ", researcher_schema, ".simple_cox;"))
@@ -154,7 +147,7 @@ summary_table_timevar <- summary(fit2)
 
 survival_table_timevar <- as.data.frame(summary_table_timevar[c("n", "nevent", "coefficients", "conf.int")])
 getwd()
-write.csv(survival_table_timevar, "./result_cox/simple_cox_survival_table.csv")
+write.csv(survival_table_timevar, "./result_cox/timevar_cox_survival_table.csv")
 
 
 #############################################################################################
